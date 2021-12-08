@@ -16,6 +16,7 @@ const (
 	MySQLError      = "MySQL Error:"
 	MissingEnvError = MySQLError + " Missing the %s environment variable"
 	PortError       = MySQLError + " " + DBPortEnv + " must be an integer"
+	RecordsFound    = "Found [%d] records to insert in block [%d]"
 )
 
 var env = []string{DBHostEnv, DBUserEnv, DBPasswordEnv, DBPortEnv}
