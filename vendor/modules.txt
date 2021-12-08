@@ -18,6 +18,7 @@ github.com/sclevine/spec
 github.com/sclevine/spec/report
 # github.com/sidelight-labs/libc v1.0.2
 ## explicit; go 1.17
+github.com/sidelight-labs/libc/logger
 # golang.org/x/net v0.0.0-20210428140749-89ef3d95e781
 ## explicit; go 1.11
 golang.org/x/net/html

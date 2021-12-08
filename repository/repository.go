@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"github.com/pkg/errors"
+	"github.com/sidelight-labs/libc/logger"
 	"os"
 	"strconv"
 )
@@ -88,7 +88,7 @@ func validateEnv() error {
 func (m MySQL) Query(query string, args ...interface{}) (RowsScanner, error) {
 	db, err := sql.Open("mysql", m.connectionString())
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("database error for query %s with args %v", query, args))
+		return nil, logger.Wrap(err, fmt.Sprintf("database error for query %s with args %v", query, args))
 	}
 	defer db.Close()
 
@@ -98,7 +98,7 @@ func (m MySQL) Query(query string, args ...interface{}) (RowsScanner, error) {
 func (m MySQL) Exec(statement string, args ...interface{}) (Summarizer, error) {
 	db, err := sql.Open("mysql", m.connectionString())
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("database error for statement %s with args %v", statement, args))
+		return nil, logger.Wrap(err, fmt.Sprintf("database error for statement %s with args %v", statement, args))
 	}
 	defer db.Close()
 
