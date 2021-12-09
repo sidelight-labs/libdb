@@ -8,12 +8,6 @@ import (
 	"strconv"
 )
 
-const (
-	MySQLError      = "MySQL Error:"
-	MissingEnvError = MySQLError + " Missing the %s environment variable"
-	PortError       = MySQLError + " " + DBPortEnv + " must be an integer"
-)
-
 type MySQL struct {
 	config config
 }

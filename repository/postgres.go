@@ -9,12 +9,6 @@ import (
 	"strconv"
 )
 
-const (
-	PostgresError     = "Postgres Error:"
-	MissingEnvErrorPG = PostgresError + " Missing the %s environment variable"
-	PortErrorPG       = PostgresError + " " + DBPortEnv + " must be an integer"
-)
-
 type Postgres struct {
 	config config
 }

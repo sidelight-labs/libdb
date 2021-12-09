@@ -26,7 +26,7 @@ func testRepository(t *testing.T, when spec.G, it spec.S) {
 			Expect(os.Unsetenv(repository.DBHostEnv)).To(Succeed())
 			_, err := repository.NewMySQL(databaseName)
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring(repository.MySQLError))
+			Expect(err.Error()).To(ContainSubstring(repository.DatabaseErrorPrefix))
 			Expect(err.Error()).To(ContainSubstring(fmt.Sprintf(repository.MissingEnvError, repository.DBHostEnv)))
 		})
 		it("returns an error when the port value is not an integer", func() {
@@ -44,6 +44,35 @@ func testRepository(t *testing.T, when spec.G, it spec.S) {
 			Expect(os.Setenv(repository.DBPasswordEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPortEnv, "123")).To(Succeed())
 			_, err := repository.NewMySQL(databaseName)
+			Expect(err).NotTo(HaveOccurred())
+		})
+	})
+
+	when("NewPostgres()", func() {
+		var databaseName = "database_name"
+
+		it("returns an error when no hostname is specified", func() {
+			Expect(os.Unsetenv(repository.DBHostEnv)).To(Succeed())
+			_, err := repository.NewPostgres(databaseName)
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring(repository.DatabaseErrorPrefix))
+			Expect(err.Error()).To(ContainSubstring(fmt.Sprintf(repository.MissingEnvError, repository.DBHostEnv)))
+		})
+		it("returns an error when the port value is not an integer", func() {
+			Expect(os.Setenv(repository.DBHostEnv, "test")).To(Succeed())
+			Expect(os.Setenv(repository.DBUserEnv, "test")).To(Succeed())
+			Expect(os.Setenv(repository.DBPasswordEnv, "test")).To(Succeed())
+			Expect(os.Setenv(repository.DBPortEnv, "test")).To(Succeed())
+			_, err := repository.NewPostgres(databaseName)
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal(repository.PortError))
+		})
+		it("returns NO error if all environment variables are valid values", func() {
+			Expect(os.Setenv(repository.DBHostEnv, "test")).To(Succeed())
+			Expect(os.Setenv(repository.DBUserEnv, "test")).To(Succeed())
+			Expect(os.Setenv(repository.DBPasswordEnv, "test")).To(Succeed())
+			Expect(os.Setenv(repository.DBPortEnv, "123")).To(Succeed())
+			_, err := repository.NewPostgres(databaseName)
 			Expect(err).NotTo(HaveOccurred())
 		})
 	})

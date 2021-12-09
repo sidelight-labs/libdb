@@ -6,11 +6,14 @@ import (
 )
 
 const (
-	DBHostEnv       = "DB_HOST"
-	DBUserEnv       = "DB_USER"
-	DBPasswordEnv   = "DB_PASSWORD"
-	DBPortEnv       = "DB_PORT"
-	RecordsFound    = "Found [%d] records to insert in block [%d]"
+	DBHostEnv           = "DB_HOST"
+	DBUserEnv           = "DB_USER"
+	DBPasswordEnv       = "DB_PASSWORD"
+	DBPortEnv           = "DB_PORT"
+	RecordsFound        = "Found [%d] records to insert in block [%d]"
+	DatabaseErrorPrefix = "Database Error:"
+	MissingEnvError     = DatabaseErrorPrefix + " Missing the %s environment variable"
+	PortError           = DatabaseErrorPrefix + " " + DBPortEnv + " must be an integer"
 )
 
 var env = []string{DBHostEnv, DBUserEnv, DBPasswordEnv, DBPortEnv}
