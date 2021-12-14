@@ -43,7 +43,7 @@ github.com/pkg/errors
 ## explicit; go 1.13
 github.com/sclevine/spec
 github.com/sclevine/spec/report
-# github.com/sidelight-labs/libc v1.0.2
+# github.com/sidelight-labs/libc v1.1.1
 ## explicit; go 1.17
 github.com/sidelight-labs/libc/logger
 # golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
