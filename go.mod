@@ -21,5 +21,5 @@ require (
 	github.com/jackc/pgx/v4 v4.14.0
 	github.com/onsi/gomega v1.17.0
 	github.com/sclevine/spec v1.4.0
-	github.com/sidelight-labs/libc v1.0.2
+	github.com/sidelight-labs/libc v1.1.1
 )
