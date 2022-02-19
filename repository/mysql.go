@@ -3,17 +3,17 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"github.com/sidelight-labs/libc/logger"
 	"os"
 	"strconv"
 )
 
 type MySQL struct {
 	config config
+	db     *sql.DB
 }
 
-func NewMySQL(database string) (MySQL, error) {
-	var result MySQL
+func NewMySQL(database string) (Store, error) {
+	var result = &MySQL{}
 
 	if err := validateEnv(); err != nil {
 		return result, err
@@ -30,32 +30,33 @@ func NewMySQL(database string) (MySQL, error) {
 	}
 	result.config.port = port
 
+	db, err := sql.Open("mysql", result.connectionString())
+	if err != nil {
+		return nil, err
+	}
+
+	result.db = db
 	return result, nil
 }
 
-func (m MySQL) Query(query string, args ...interface{}) (RowsScanner, error) {
-	db, err := sql.Open("mysql", m.connectionString())
-	if err != nil {
-		return nil, logger.Wrap(err, fmt.Sprintf("database error for query %s with args %v", query, args))
-	}
-	defer db.Close()
-
-	return db.Query(query, args...)
+func (m *MySQL) Query(query string, args ...interface{}) (RowsScanner, error) {
+	return m.db.Query(query, args...)
 }
 
-func (m MySQL) Exec(statement string, args ...interface{}) error {
-	db, err := sql.Open("mysql", m.connectionString())
-	if err != nil {
-		return logger.Wrap(err, fmt.Sprintf("database error for statement %s with args %v", statement, args))
-	}
-	defer db.Close()
-
-	_, err = db.Exec(statement, args...)
-
+func (m *MySQL) Exec(statement string, args ...interface{}) error {
+	_, err := m.db.Exec(statement, args...)
 	return err
 }
 
-func (m MySQL) connectionString() string {
+func (m *MySQL) Close() error {
+	if m.db != nil {
+		return m.db.Close()
+	}
+
+	return nil
+}
+
+func (m *MySQL) connectionString() string {
 	// <username>:<pw>@tcp(<HOST>:<port>)/<dbname>
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true",
 		m.config.user, m.config.password, m.config.host, m.config.port, m.config.database)

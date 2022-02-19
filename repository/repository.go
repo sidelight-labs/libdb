@@ -21,6 +21,7 @@ var env = []string{DBHostEnv, DBUserEnv, DBPasswordEnv, DBPortEnv}
 type Store interface {
 	Query(query string, args ...interface{}) (RowsScanner, error)
 	Exec(statement string, args ...interface{}) error
+	Close() error
 }
 
 type Scanner interface {

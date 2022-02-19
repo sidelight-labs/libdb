@@ -15,8 +15,16 @@ func TestUnitRepository(t *testing.T) {
 }
 
 func testRepository(t *testing.T, when spec.G, it spec.S) {
+	var (
+		subject repository.Store
+	)
+
 	it.Before(func() {
 		RegisterTestingT(t)
+	})
+
+	it.After(func() {
+		subject.Close()
 	})
 
 	when("NewMySQL()", func() {
@@ -24,7 +32,8 @@ func testRepository(t *testing.T, when spec.G, it spec.S) {
 
 		it("returns an error when no hostname is specified", func() {
 			Expect(os.Unsetenv(repository.DBHostEnv)).To(Succeed())
-			_, err := repository.NewMySQL(databaseName)
+			var err error
+			subject, err = repository.NewMySQL(databaseName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring(repository.DatabaseErrorPrefix))
 			Expect(err.Error()).To(ContainSubstring(fmt.Sprintf(repository.MissingEnvError, repository.DBHostEnv)))
@@ -34,7 +43,8 @@ func testRepository(t *testing.T, when spec.G, it spec.S) {
 			Expect(os.Setenv(repository.DBUserEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPasswordEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPortEnv, "test")).To(Succeed())
-			_, err := repository.NewMySQL(databaseName)
+			var err error
+			subject, err = repository.NewMySQL(databaseName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal(repository.PortError))
 		})
@@ -43,7 +53,8 @@ func testRepository(t *testing.T, when spec.G, it spec.S) {
 			Expect(os.Setenv(repository.DBUserEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPasswordEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPortEnv, "123")).To(Succeed())
-			_, err := repository.NewMySQL(databaseName)
+			var err error
+			subject, err = repository.NewMySQL(databaseName)
 			Expect(err).NotTo(HaveOccurred())
 		})
 	})
@@ -53,7 +64,8 @@ func testRepository(t *testing.T, when spec.G, it spec.S) {
 
 		it("returns an error when no hostname is specified", func() {
 			Expect(os.Unsetenv(repository.DBHostEnv)).To(Succeed())
-			_, err := repository.NewPostgres(databaseName)
+			var err error
+			subject, err = repository.NewPostgres(databaseName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(ContainSubstring(repository.DatabaseErrorPrefix))
 			Expect(err.Error()).To(ContainSubstring(fmt.Sprintf(repository.MissingEnvError, repository.DBHostEnv)))
@@ -63,7 +75,8 @@ func testRepository(t *testing.T, when spec.G, it spec.S) {
 			Expect(os.Setenv(repository.DBUserEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPasswordEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPortEnv, "test")).To(Succeed())
-			_, err := repository.NewPostgres(databaseName)
+			var err error
+			subject, err = repository.NewPostgres(databaseName)
 			Expect(err).To(HaveOccurred())
 			Expect(err.Error()).To(Equal(repository.PortError))
 		})
@@ -72,7 +85,8 @@ func testRepository(t *testing.T, when spec.G, it spec.S) {
 			Expect(os.Setenv(repository.DBUserEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPasswordEnv, "test")).To(Succeed())
 			Expect(os.Setenv(repository.DBPortEnv, "123")).To(Succeed())
-			_, err := repository.NewPostgres(databaseName)
+			var err error
+			subject, err = repository.NewPostgres(databaseName)
 			Expect(err).NotTo(HaveOccurred())
 		})
 	})
