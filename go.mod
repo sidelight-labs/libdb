@@ -3,7 +3,7 @@ module github.com/sidelight-labs/libdb
 go 1.17
 
 require (
-	github.com/google/go-cmp v0.5.8 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.14.0 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -20,7 +20,7 @@ require (
 
 require (
 	github.com/jackc/pgx/v4 v4.18.0
-	github.com/onsi/gomega v1.22.1
+	github.com/onsi/gomega v1.27.0
 	github.com/sclevine/spec v1.4.0
 	github.com/sidelight-labs/libc v1.2.2
 )
