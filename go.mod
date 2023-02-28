@@ -19,7 +19,7 @@ require (
 )
 
 require (
-	github.com/jackc/pgx/v4 v4.18.0
+	github.com/jackc/pgx/v4 v4.18.1
 	github.com/onsi/gomega v1.22.1
 	github.com/sclevine/spec v1.4.0
 	github.com/sidelight-labs/libc v1.2.2
